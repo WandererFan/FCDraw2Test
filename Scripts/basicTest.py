@@ -2,6 +2,7 @@
 # -*- coding: utf-8 -*-
 
 # basic test script for TechDraw module
+# creates a page and 1 view
 # assumes an active empty document to start
 from __future__ import print_function
 
@@ -15,12 +16,15 @@ templateFileSpec = '/home/cheinz/freecad-draw2-build/data/Mod/Drawing/Templates/
 print("basic test started")
 box = FreeCAD.ActiveDocument.addObject("Part::Box","Box")
 
-FreeCAD.ActiveDocument.addObject('TechDraw::DrawPage','Page')
+page = FreeCAD.ActiveDocument.addObject('TechDraw::DrawPage','Page')
 FreeCAD.ActiveDocument.addObject('TechDraw::DrawSVGTemplate','Template')
 FreeCAD.ActiveDocument.Template.Template = templateFileSpec
 FreeCAD.ActiveDocument.Page.Template = FreeCAD.ActiveDocument.Template
+page.ViewObject.show()
 
 view = FreeCAD.ActiveDocument.addObject('TechDraw::DrawViewPart','View')
+rc = page.addView(view)
+
 # need another Py command here to add View to Page
 FreeCAD.ActiveDocument.View.Source = App.ActiveDocument.Box
 FreeCAD.ActiveDocument.View.Direction = (0.0,0.0,1.0)
