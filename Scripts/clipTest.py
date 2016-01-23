@@ -46,7 +46,7 @@ FreeCAD.activeDocument().Clip.ShowLabels = False
 rc = page.addView(clip)
 
 #add Views to Clip
-clip.addView(view1)     #DocObj has no attribute addView.  but page is a DrawPage>>>DocObj and it does have an addView
+clip.addView(view1)
 clip.addView(view2)
 
 #remove 1 view from Clip
