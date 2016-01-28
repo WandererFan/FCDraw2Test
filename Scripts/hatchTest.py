@@ -2,9 +2,8 @@
 # -*- coding: utf-8 -*-
 
 # test script for TechDraw module
-# creates a page and 2 views
-# adds 1 length dimension to view1
-# adds 1 radius dimension to view2
+# creates a page and 1 views
+# adds a hatch area to view1
 # assumes an active empty document to start
 from __future__ import print_function
 
@@ -14,11 +13,11 @@ import Measure
 import TechDraw
 
 templateFileSpec = '/home/cheinz/freecad-draw2-build/data/Mod/Drawing/Templates/A4_Landscape.svg'
+hatchFileSpec = ''
 
-print("dimension test started")
+print("hatch test started")
 #make source feature
 box = FreeCAD.ActiveDocument.addObject("Part::Box","Box")
-sphere = FreeCAD.ActiveDocument.addObject("Part::Sphere","Sphere")
 
 #make a page
 page = FreeCAD.ActiveDocument.addObject('TechDraw::DrawPage','Page')
@@ -31,35 +30,25 @@ page.ViewObject.show()
 view1 = FreeCAD.ActiveDocument.addObject('TechDraw::DrawViewPart','View')
 FreeCAD.ActiveDocument.View.Source = App.ActiveDocument.Box
 rc = page.addView(view1)
-view2 = FreeCAD.activeDocument().addObject('TechDraw::DrawViewPart','View001')
-FreeCAD.activeDocument().View001.Source = App.activeDocument().Sphere
-rc = page.addView(view2)
 FreeCAD.ActiveDocument.recompute()
 
-#make length dimension
-print("making length dimension")
-dim1 = FreeCAD.ActiveDocument.addObject('TechDraw::DrawViewDimension','Dimension')
-dim1.Type = "Distance"
+#make hatch
+print("making hatch")
+hatch = FreeCAD.ActiveDocument.addObject('TechDraw::DrawHatch','Hatch')
+hatch.PartView = view1
 objs = list()
-objs.append(view1)
-subObjs = list()
-subObjs.append("Edge1")
-dim1.References=[(view1, 'Edge1')]
-print("adding dim1 to page")
-rc = page.addView(dim1)
-print("finished length dimension")
-
-#make radius dimension
-print("making radius dimension")
-dim2 = FreeCAD.ActiveDocument.addObject('TechDraw::DrawViewDimension','Dimension001')
-dim2.Type = "Radius"
-dim2.ProjectionType = "Projected"
-dim2.FormatSpec = 'r%value%'
-dim2.References=[(view2, 'Edge0')]
-rc = page.addView(dim2)
+objs.append((view1,"Edge0"))
+objs.append((view1,"Edge1"))
+objs.append((view1,"Edge2"))
+objs.append((view1,"Edge3"))
+hatch.Edges = objs
+#hatch.HatchPattern = hatchFileSpec          #comment out to use default from preferences
+print("adding hatch to page")
+rc = page.addView(hatch)
+print("finished hatch")
 
 ##need to run something here to get views to claim children.
 view1.X = view1.X + 10
 FreeCAD.ActiveDocument.recompute()
 
-print("dimension test ended")
+print("hatch test ended")
