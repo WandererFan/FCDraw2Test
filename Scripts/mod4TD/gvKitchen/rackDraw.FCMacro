@@ -1,0 +1,82 @@
+from work_surface import *
+from storage_rack import *
+
+doc = App.newDocument('Kitchen')
+
+surface= Work_Surface(18,50,30, 825)
+
+rackWidth     = 1500
+rackHeight    = 350
+rackDepth     = 300
+woodThickness = 18
+shelfNumber   = 0
+
+rackOffsetX = 560 + (2210 - rackWidth)/2
+rackOffsetY = surface.depth - rackDepth
+rackOffsetZ = 1600
+
+new_rack = Storage_Rack(rackWidth, rackHeight,rackDepth,woodThickness,shelfNumber)
+new_rack.move_board(rackOffsetX,rackOffsetY, rackOffsetZ)
+
+for key in new_rack.parts:
+	doc.addObject("Part::Feature",key).Shape = new_rack.parts[key]	
+
+for key in surface.parts_left:
+	doc.addObject("Part::Feature",key).Shape = surface.parts_left[key]	
+
+
+for key in surface.parts_right:
+	doc.addObject("Part::Feature",key).Shape = surface.parts_right[key]
+
+Gui.SendMsgToActiveView("ViewFit")
+Gui.ActiveDocument.ActiveView.setAxisCross(True)
+Gui.activeDocument().activeView().viewAxometric()
+
+print "3D object creation complete.  Starting drawing process"
+""" Drawing for storage Rack"""
+
+rack_keys = ['bottom shelf', 'top shelf', 'right side','left side']
+rack_fusion = new_rack.parts[rack_keys[0]]
+for i in rack_keys[1:]:
+	rack_fusion = rack_fusion.fuse(new_rack.parts[i])
+
+doc.addObject("Part::Feature","complete rack").Shape = rack_fusion
+
+#doc.addObject('Drawing::FeaturePage','Page')
+page = doc.addObject('TechDraw::DrawPage','Page')
+doc.addObject('TechDraw::DrawSVGTemplate','Template')
+#doc.Template.Template = '/home/cheinz/FCDraw2Test/Templates/A0_Landscape_ISO7200.svg'   #Template w/o transform="translate(979,544)"
+doc.Template.Template = App.getResourceDir()+'Mod/Drawing/Templates/A0_Landscape_ISO7200.svg'
+doc.Page.Template = doc.Template
+#~ doc.Page.Template = App.getResourceDir()+'Mod/Drawing/Templates/A0_Landscape_ISO7200.svg'
+
+viewx = doc.addObject('TechDraw::DrawViewPart','ViewX')
+viewy = doc.addObject('TechDraw::DrawViewPart','ViewY')
+viewz = doc.addObject('TechDraw::DrawViewPart','ViewZ')
+viewiso = doc.addObject('TechDraw::DrawViewPart','ViewIso')
+
+Views 		   = [ doc.ViewX,     doc.ViewY,     doc.ViewZ,    doc.ViewIso] 
+ViewsDirection = [(1.0,0.0,0.0), (0.0,1.0,.0), (0.0,0.0,1.0), (1.0,-1.0,0.5)]   #projection normal
+ViewsX		   = [    1070.0,        480.0,       480.0,         400.0]          #X,Y w/o impact of transform="translate(979,544)"
+ViewsY		   = [   700.0, 		700.0,        380.0, 		  140.0]
+ViewsScale     = [		0.6,		   0.6,          0.6,			0.3]
+#ViewsRotation  = [     90.0,          90.0,          0.0,		  180.0]
+ViewsRotation  = [     0.0,          0.0,          0.0,		  0.0]
+ViewsHiddenL   = [     True,		  True,    		True,		   True]
+ViewsXAxis     = [(0.0,1.0,0.0), (1.0,0.0,.0), (1.0,0.0,0.0), (1.0,0.0,0.0)]    #determines projection plane(YZ,XY,XY,XY) (not in Drawing?)
+
+for i in range(len(Views)):
+	Views[i].Source	   = doc.complete_rack
+	Views[i].Direction = ViewsDirection[i]
+	Views[i].X         = ViewsX[i]
+	Views[i].Y         = ViewsY[i]
+	Views[i].ScaleType = 'Custom'
+	Views[i].Scale     = ViewsScale[i]
+	Views[i].Rotation  = ViewsRotation[i]
+	Views[i].ShowHiddenLines = ViewsHiddenL[i] 
+	Views[i].XAxisDirection = ViewsXAxis[i]
+
+	doc.Page.addView(Views[i])                                                  #or page.addView(Views[i])
+
+doc.recompute()
+Gui.activeDocument().getObject("Page").show()
