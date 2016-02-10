@@ -30,6 +30,7 @@ s = 'Different Text'
 sl = list()
 sl.append(s)
 anno.Text = sl
+anno.TextStyle = 'Bold'
 rc = page.addView(anno)
 
 #symbol
