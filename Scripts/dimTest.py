@@ -44,7 +44,7 @@ objs = list()
 objs.append(view1)
 subObjs = list()
 subObjs.append("Edge1")
-dim1.References=[(view1, 'Edge1')]
+dim1.References2D=[(view1, 'Edge1')]
 print("adding dim1 to page")
 rc = page.addView(dim1)
 print("finished length dimension")
@@ -53,9 +53,9 @@ print("finished length dimension")
 print("making radius dimension")
 dim2 = FreeCAD.ActiveDocument.addObject('TechDraw::DrawViewDimension','Dimension001')
 dim2.Type = "Radius"
-dim2.ProjectionType = "Projected"
+dim2.MeasureType = "Projected"
 dim2.FormatSpec = 'r%value%'
-dim2.References=[(view2, 'Edge0')]
+dim2.References2D=[(view2, 'Edge0')]
 rc = page.addView(dim2)
 
 ##need to run something here to get views to claim children.
