@@ -35,13 +35,9 @@ FreeCAD.ActiveDocument.recompute()
 #make hatch
 print("making hatch")
 hatch = FreeCAD.ActiveDocument.addObject('TechDraw::DrawHatch','Hatch')
-hatch.PartView = view1
-objs = list()
-objs.append((view1,"Edge0"))
-objs.append((view1,"Edge1"))
-objs.append((view1,"Edge2"))
-objs.append((view1,"Edge3"))
-hatch.Edges = objs
+subObjs = list()
+subObjs.append("Face0")
+hatch.Source = (view1,subObjs)
 #hatch.HatchPattern = hatchFileSpec          #comment out to use default from preferences
 print("adding hatch to page")
 rc = page.addView(hatch)
