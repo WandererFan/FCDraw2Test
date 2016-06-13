@@ -70,6 +70,7 @@
 			</g>
 		</g>
 	</g>
+	<!-- freecad:editable fields must use absolute coords. No transform clause allowed. -->
 	<g
 		id="titleblock-text-editable"
 		style="font-size:5px;text-anchor:start;fill:#000000;font-family:osifont"
