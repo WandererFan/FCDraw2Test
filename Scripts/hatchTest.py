@@ -12,8 +12,11 @@ import Part
 import Measure
 import TechDraw
 
-templateFileSpec = '/home/cheinz/freecad-draw2-build/data/Mod/Drawing/Templates/A4_Landscape.svg'
-hatchFileSpec = ''
+import os
+path = os.path.dirname(os.path.abspath(__file__))
+print ('path: ' + path)
+templateFileSpec = path+'/A4_LandscapeTD.svg'
+hatchFileSpec = path + '/TestHatch.svg'
 
 print("hatch test started")
 #make source feature
@@ -38,7 +41,7 @@ hatch = FreeCAD.ActiveDocument.addObject('TechDraw::DrawHatch','Hatch')
 subObjs = list()
 subObjs.append("Face0")
 hatch.Source = (view1,subObjs)
-#hatch.HatchPattern = hatchFileSpec          #comment out to use default from preferences
+hatch.HatchPattern = hatchFileSpec          #comment out to use default from preferences
 print("adding hatch to page")
 rc = page.addView(hatch)
 print("finished hatch")

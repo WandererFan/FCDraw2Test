@@ -1,7 +1,8 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-# move Views from Drawing Page to TechDraw Page
+# move Views from Drawing Page to TechDraw Page in the current document
+
 import FreeCAD
 import Part
 import Drawing

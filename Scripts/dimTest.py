@@ -13,7 +13,10 @@ import Part
 import Measure
 import TechDraw
 
-templateFileSpec = '/home/cheinz/freecad-draw2-build/data/Mod/Drawing/Templates/A4_Landscape.svg'
+import os
+path = os.path.dirname(os.path.abspath(__file__))
+print ('path: ' + path)
+templateFileSpec = path+'/A4_LandscapeTD.svg'
 
 print("dimension test started")
 #make source feature
@@ -54,7 +57,6 @@ print("making radius dimension")
 dim2 = FreeCAD.ActiveDocument.addObject('TechDraw::DrawViewDimension','Dimension001')
 dim2.Type = "Radius"
 dim2.MeasureType = "Projected"
-dim2.FormatSpec = 'r%value%'
 dim2.References2D=[(view2, 'Edge0')]
 rc = page.addView(dim2)
 

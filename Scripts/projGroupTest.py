@@ -14,7 +14,9 @@ import Part
 import Measure
 import TechDraw
 
-templateFileSpec = '/home/cheinz/freecad-draw2-build/data/Mod/Drawing/Templates/A4_Landscape.svg'
+import os
+path = os.path.dirname(os.path.abspath(__file__))
+templateFileSpec = path+'/A4_LandscapeTD.svg'
 
 print("projection group test started")
 #make Fusion feature
@@ -35,12 +37,12 @@ group = FreeCAD.ActiveDocument.addObject('TechDraw::DrawProjGroup','cView')
 group.Source = fusion
 anchorView = group.addProjection("Front")
 group.Anchor = anchorView
+leftView = group.addProjection("Left")              #Bug here! X,Y of item not set correctly
+topView = group.addProjection("Top")
 page.addView(group)
-leftView = group.addProjection("Left")
-rightView = group.addProjection("Top")
 
 #remove a view from projection group
-iv = group.removeProjection("Left")
+#iv = group.removeProjection("Left")
 
 #test getItemByLabel method
 label = "Top"

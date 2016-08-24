@@ -11,7 +11,10 @@ import Part
 import Measure
 import TechDraw
 
-templateFileSpec = '/home/cheinz/freecad-draw2-build/data/Mod/Drawing/Templates/A4_Landscape.svg'
+import os
+path = os.path.dirname(os.path.abspath(__file__))
+print ('path: ' + path)
+templateFileSpec = path+'/A4_LandscapeTD.svg'
 
 print("basic test started")
 box = FreeCAD.ActiveDocument.addObject("Part::Box","Box")

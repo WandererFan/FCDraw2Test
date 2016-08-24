@@ -11,8 +11,10 @@ import Part
 import Measure
 import TechDraw
 
-templateFileSpec = '/home/cheinz/freecad-draw2-build/data/Mod/Drawing/Templates/A4_Landscape.svg'
-symbolFileSpec = '/home/cheinz/Documents/CAD/DrawingModule/TestSymbol.svg'
+import os
+path = os.path.dirname(os.path.abspath(__file__))
+templateFileSpec = path + '/A4_LandscapeTD.svg'
+symbolFileSpec = path + 'TestSymbol.svg'
 
 print("Annotation and Symbol test started")
 
