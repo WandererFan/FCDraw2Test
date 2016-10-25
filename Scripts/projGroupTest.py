@@ -35,9 +35,11 @@ page.ViewObject.show()
 #make projection group
 group = FreeCAD.ActiveDocument.addObject('TechDraw::DrawProjGroup','cView')
 group.Source = fusion
+group.ScaleType = "Document"
 anchorView = group.addProjection("Front")
 group.Anchor = anchorView
-leftView = group.addProjection("Left")              #Bug here! X,Y of item not set correctly
+
+leftView = group.addProjection("Left")
 topView = group.addProjection("Top")
 page.addView(group)
 
